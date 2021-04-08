@@ -311,16 +311,16 @@ a single min_max function that is controlled by a flag to determine which
 operation to perform.
 """
 
-def min_max(arr, min):
+def min_max(arr, mini):
     # arr is an array
     # min is a boolean to control the output
     l = len(arr)
     minmax = arr[0] # priming read to get a start value
     for i in range(1, l):
-        if(min):
-            if arr[i] > minmax: minmax = arr[i]
-        else:
+        if(mini):
             if arr[i] < minmax: minmax = arr[i]
+        else:
+            if arr[i] > minmax: minmax = arr[i]
     return minmax
     
 print("min:", min_max(rnums, True))    
@@ -336,16 +336,16 @@ In the function above, we can make a small change so that the minimum is
 assumed, and then we can override it to the max if we choose. This is
 done with a default value for min.
 """
-def min_max2(arr, min=True):
+def min_max2(arr, mini=True):
     # arr is an array
     # min is a boolean to control the output
     l = len(arr)
     minmax = arr[0] # priming read to get a start value
     for i in range(1, l):
-        if(min):
-            if arr[i] > minmax: minmax = arr[i]
-        else:
+        if(mini):
             if arr[i] < minmax: minmax = arr[i]
+        else:
+            if arr[i] > minmax: minmax = arr[i]
     return minmax
     
 # now when we call min_max2, we only need to pass a boolean
@@ -365,24 +365,28 @@ This demonstrates a complete, professional version of the min_max function.
 This will also demonstrate the correct usage of the Try/Except statement.
 """
 
-def minmaxpro(arr, min=True):
+def minmaxpro(arr, mini=True):
+    # we need a default value to return if needed
+    # it is not needed here, but this is best practice
+    minmax = None 
 
     if type(arr) != type(np.empty(0, dtype="int")):
         raise TypeError('array must be a Numpy integer array')
-    elif type(min) != bool:
+    elif type(mini) != bool:
         raise TypeError('parameter min must be Boolean')
     else:
         l = len(arr)
         minmax = arr[0] # priming read to get a start value
-        for i in range(1, l):
-            if(min):
-                if arr[i] > minmax: minmax = arr[i]
-            else:
+        if(mini):
+            for i in range(1, l):
                 if arr[i] < minmax: minmax = arr[i]
-        return minmax
+        else:
+            for i in range(1, l):
+                if arr[i] > minmax: minmax = arr[i]
+    return minmax
     
 
-# using the function correctly
+# using the minmaxpro function correctly
 try:
     print("min:", minmaxpro(rnums))
 except TypeError as e:
